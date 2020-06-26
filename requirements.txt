@@ -1,0 +1,6 @@
+pandas
+# Jupyter
+matplotlib
+ipympl
+qgrid
+voila

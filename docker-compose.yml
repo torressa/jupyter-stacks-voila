@@ -1,0 +1,19 @@
+version: "2.3"
+
+services:
+  build-book:
+    image: jupyter/book:builder
+    build:
+      context: ./
+      target: builder
+    command: echo "built"
+  run-book:
+    image: jupyter/book:run
+    build:
+      context: ./
+      target: run
+      cache_from:
+        - jupyter/book:builder
+    ports:
+      - "8866:8866"
+    command: python3 -m voila ./notebooks/basic.ipynb

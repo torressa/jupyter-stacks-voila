@@ -1,0 +1,14 @@
+# Docs, dev and misc.
+.git
+.env
+*.ipynb
+*.md
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+# Data
+data/*
