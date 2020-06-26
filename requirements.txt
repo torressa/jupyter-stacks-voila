@@ -3,4 +3,5 @@ pandas
 matplotlib
 ipympl
 qgrid
+ipywidgets
 voila

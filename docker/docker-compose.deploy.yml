@@ -1,0 +1,23 @@
+version: "2.3"
+
+services:
+  build-book:
+    image: jupyter/book:builder
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+      target: builder
+    command: echo "built"
+  deploy-book:
+    image: jupyter/book:deploy
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+      target: deploy
+      cache_from:
+        - jupyter/book:builder
+    volumes:
+      - ../:/home/jovyan/work
+    ports:
+      - "8866:8866"
+    command: ./run_voila

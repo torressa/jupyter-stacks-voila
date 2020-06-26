@@ -4,16 +4,19 @@ services:
   build-book:
     image: jupyter/book:builder
     build:
-      context: ./
+      context: ../
+      dockerfile: docker/Dockerfile
       target: builder
     command: echo "built"
   run-book:
     image: jupyter/book:run
     build:
-      context: ./
+      context: ../
+      dockerfile: docker/Dockerfile
       target: run
       cache_from:
         - jupyter/book:builder
+    volumes:
+      - ../:/home/jovyan/work
     ports:
-      - "8866:8866"
-    command: python3 -m voila ./notebooks/basic.ipynb
+      - "8888:8888"

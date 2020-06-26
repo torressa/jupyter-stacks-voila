@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+cd ../docker
+# Remove containers if already running
+docker-compose --file docker-compose.run.yml rm -fsv
+docker-compose --file docker-compose.run.yml down
+# Build and spin
+docker-compose --file docker-compose.run.yml up --build --remove-orphans
