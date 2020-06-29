@@ -2,7 +2,13 @@
 
 cd ../docker
 # Remove containers if already running
-docker-compose --file docker-compose.deploy.yml rm -fsv
-docker-compose --file docker-compose.deploy.yml down
+docker-compose \
+	--file docker-compose.nginx.yml --file docker-compose.build.yml --file docker-compose.voila.yml \
+	rm -fsv
+docker-compose \
+	--file docker-compose.nginx.yml --file docker-compose.build.yml --file docker-compose.voila.yml \
+	down
 # Build and spin
-docker-compose --file docker-compose.deploy.yml up --build --remove-orphans
+docker-compose \
+	--file docker-compose.nginx.yml --file docker-compose.build.yml --file docker-compose.voila.yml \
+	up --build --remove-orphans

@@ -1,0 +1,14 @@
+version: "2.3"
+
+services:
+  run-nginx:
+    build:
+      context: ../nginx
+      dockerfile: ../docker/Dockerfile.nginx
+    restart: unless-stopped
+    container_name: nginx
+    depends_on:
+      - run-voila
+    ports:
+      - 8000:8080
+    network_mode: host

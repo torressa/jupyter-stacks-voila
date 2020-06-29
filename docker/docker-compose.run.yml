@@ -1,13 +1,6 @@
 version: "2.3"
 
 services:
-  build-book:
-    image: jupyter/book:builder
-    build:
-      context: ../
-      dockerfile: docker/Dockerfile
-      target: builder
-    command: echo "built"
   run-book:
     image: jupyter/book:run
     build:
