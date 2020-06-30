@@ -7,8 +7,9 @@ services:
       dockerfile: ../docker/Dockerfile.nginx
     restart: unless-stopped
     container_name: nginx
-    depends_on:
+    links:
       - run-voila
     ports:
-      - 8000:8080
-    network_mode: host
+      - 80:80
+    volumes:
+      - ../nginx/conf.d/:/etc/nginx/conf.d/

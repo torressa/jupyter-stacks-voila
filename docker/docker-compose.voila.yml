@@ -2,7 +2,6 @@ version: "2.3"
 
 services:
   run-voila:
-    image: jupyter/book:voila
     build:
       context: ../
       dockerfile: docker/Dockerfile
@@ -11,8 +10,6 @@ services:
         - jupyter/book:builder
     volumes:
       - ../:/home/jovyan/work
-    ports:
-      - "8000:8866"
     expose:
-        - 8000
+      - 8866
     command: ./run_voila
