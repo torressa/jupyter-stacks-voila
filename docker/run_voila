@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-
 python3 -m voila \
---enable_nbextensions=True \
---autoreload=True \
+	--enable_nbextensions=True \
+	--autoreload=True \
+	--no-browser \
+	--MappingKernelManager.cull_interval=60 \
+	--MappingKernelManager.cull_idle_timeout=120 \
 basic.ipynb

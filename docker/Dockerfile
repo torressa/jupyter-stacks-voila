@@ -16,12 +16,11 @@ FROM jupyter/base-notebook AS run
 COPY --from=builder /home/jovyan/.local/ /home/jovyan/.local
 
 USER root
-
 ENV PYTHONPATH "/home/jovyan/work/"
+USER $NB_USER
+
 # Install necessary jupyter packages for writing here. e.g.
 RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
-
-USER $NB_USER
 
 ####################
 # Deployment Stage #
@@ -34,9 +33,13 @@ COPY notebooks .
 COPY docker/run_voila .
 
 USER root
-
 ENV PYTHONPATH "/home/jovyan/work/"
-# Install necessary jupyter packages for deployment here. e.g.
-RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension
-
 USER $NB_USER
+
+# Install necessary jupyter packages for deployment here. e.g.
+RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension \
+&& jupyter nbextension install --py --symlink --sys-prefix ipympl \
+&& jupyter nbextension enable --py --sys-prefix ipympl \
+&& jupyter nbextension install --py --symlink --sys-prefix qgrid \
+&& jupyter nbextension enable --py --sys-prefix qgrid \
+&& conda install -c conda-forge nodejs
