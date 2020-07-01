@@ -40,6 +40,5 @@ USER $NB_USER
 RUN jupyter nbextension enable --py --sys-prefix widgetsnbextension \
 && jupyter nbextension install --py --symlink --sys-prefix ipympl \
 && jupyter nbextension enable --py --sys-prefix ipympl \
-&& jupyter nbextension install --py --symlink --sys-prefix qgrid \
-&& jupyter nbextension enable --py --sys-prefix qgrid \
-&& conda install -c conda-forge nodejs
+&& jupyter nbextension install --py --symlink --sys-prefix ipysheet \
+&& jupyter nbextension enable --py --sys-prefix ipysheet
