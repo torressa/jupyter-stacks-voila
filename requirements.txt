@@ -1,7 +1,6 @@
 pandas
-# Jupyter
 matplotlib
 ipympl
-qgrid
+ipysheet
 ipywidgets
 voila
