@@ -2,13 +2,6 @@
 
 cd ../docker
 # Remove containers if already running
-docker-compose \
-	--file docker-compose.run.yml --file docker-compose.build.yml \
-	rm -fsv
-docker-compose \
-	--file docker-compose.run.yml --file docker-compose.build.yml \
-	down
+docker-compose rm -fsv build-notebook run-notebook
 # Build and spin
-docker-compose \
-	--file docker-compose.run.yml --file docker-compose.build.yml up \
-	--build --remove-orphans
+docker-compose up --build --remove-orphans build-notebook run-notebook
