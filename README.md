@@ -9,23 +9,21 @@ using [voila](https://github.com/voila-dashboards/voila/tree/stable) and [nginx]
 - Docker and docker-compose
 - bash
 
-# Get started
+#  Quick start
 
-To run and edit the notebook, run
+To run and edit the notebook,
 
 ```bash
 cd scripts/
 ./run_notebook
 ```
 
-To run voila, run
+To serve your notebook on voila through nginx on `http://localhost:80`,
 
 ```bash
 cd scripts/
 ./deploy_notebook
 ```
-
-This will serve your notebook on voila through nginx on `http://localhost:80`.
 
 # Structure
 
@@ -38,27 +36,41 @@ This will serve your notebook on voila through nginx on `http://localhost:80`.
 
 ## Scripts
 
-- `run_notebook` - spin up a jupyter/docker-stack container to edit the notebook (in case you don't want to have jupyter locally).
-- `deploy_notebook` - spin up both voila (uses a jupyter/docker-stack image) and nginx and reroute the voila server through nginx.
-
-## nginx
-
-In the nginx folder there are some configuration files, as per specified in the voila
-[docs](https://voila.readthedocs.io/en/stable/deploy.html#running-voila-on-a-private-server)
-and another one to configure the voila container (note the server name is the same as the name in the docker compose) as an "upstream server".
+- `run_notebook` - spin up a jupyter/docker-stacks container to edit the notebook (in case you don't have jupyter locally).
+- `deploy_notebook` - spin up both voila (uses our jupyter/docker-stacks builder image) and nginx and reroute the voila server through nginx.
 
 ## Docker
 
 The folder contains all the docker and docker-compose files,
 as oppossed to having yml and docker files hidden in different places.
 
-In this project, docker image building, tagging and service orchestration is done by docker-compose.
+### Docker-compose for everything
+
+In this project, docker image building, tagging, caching and service orchestration is done by
+docker-compose.
 All services (even though some are independent and not related) are in the same docker compose file.
 When spinning, the specific services required are specified in the docker-compose commands, the
 rest of the services are ignored.
 
-For example, to run the jupyter notebook, the `build-notebook` and `run-notebook` services are used.
+For example in the `./run_notebook` script, to run the jupyter notebook for editing,
+the `build-notebook` and `run-notebook`
+services are used.
+
 To serve voila through nginx, the `build-notebook`, `voila` and `nginx` services are all used.
 
-Also, multi-stage docker images allow you to control the size of the final images and delete the
-intermediate ones only used for building (`build-notebook` in this case).
+### Multi-stage builds
+
+As a matter of taste, multi-stage docker images are also used in this project.
+These allow you to control the size of the final images and delete the
+intermediate ones only used for building (`jupyter/notebook:builder` in this case, produced
+by the `build-notebook` service).
+
+In this case, there is no benefit since the builder image and the rest are the same size,
+however, in most real cases, the builder image requires a lot more additional stuff
+(e.g. download and compilation of external libraries, additional packages, building, testing, ...)
+which could make it significantly larger than required for production or deployment.
+
+## nginx
+
+In the nginx folder there is the configuration file specified in the voila
+[docs](https://voila.readthedocs.io/en/stable/deploy.html#running-voila-on-a-private-server).
