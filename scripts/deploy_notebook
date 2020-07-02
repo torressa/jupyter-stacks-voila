@@ -1,17 +1,7 @@
 #!/usr/bin/env bash
 
 cd ../docker
-# Remove containers if already running
-docker-compose \
-	--file docker-compose.build.yml --file docker-compose.voila.yml \
-	--file docker-compose.nginx.yml \
-	rm -fsv
-docker-compose \
-	--file docker-compose.build.yml --file docker-compose.voila.yml \
-	--file docker-compose.nginx.yml \
-	down
-# Build and spin (remove `-d` flag to see logs)
-docker-compose \
-	--file docker-compose.build.yml --file docker-compose.voila.yml \
-	--file docker-compose.nginx.yml \
-	up -d --build --remove-orphans
+# Remove and stop containers if already running
+docker-compose rm -fsv build-notebook voila nginx
+# Build and spin
+docker-compose up --build --remove-orphans build-notebook voila nginx

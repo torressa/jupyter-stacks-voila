@@ -6,8 +6,7 @@ using [voila](https://github.com/voila-dashboards/voila/tree/stable) and [nginx]
 
 # Requirements
 
-- Docker
-- python
+- Docker and docker-compose
 - bash
 
 # Get started
@@ -51,17 +50,15 @@ and another one to configure the voila container (note the server name is the sa
 ## Docker
 
 The folder contains all the docker and docker-compose files,
-as oppossed to having yml and docker file hidden in different places.
+as oppossed to having yml and docker files hidden in different places.
 
-1. Jupyter/doker-stacks (`Dockerfile`, `docker-compose.build.yml`, `docker-compose.run.yml`)
-2. voila [`docker-compose.voila.yml`](docker/docker-compose.voila.yml) and [`run_voila`](docker/run_voila) script with to run voila with custom flags and things (ran inside a jupyter/docker-stack docker image)
-3. nginx (`*nginx*`)
+In this project, docker image building, tagging and service orchestration is done by docker-compose.
+All services (even though some are independent and not related) are in the same docker compose file.
+When spinning, the specific services required are specified in the docker-compose commands, the
+rest of the services are ignored.
 
-To overcomplicate things, I've split the different components into different files. However,
-some of them are share and/or are dependent.
-When spinning, the docker compose command concatenates the specified files.
-The same result can be achieved by copying and pasting.
+For example, to run the jupyter notebook, the `build-notebook` and `run-notebook` services are used.
+To serve voila through nginx, the `build-notebook`, `voila` and `nginx` services are all used.
 
-For example, to run the jupyter notebook, the `build` and `run` compose files are used. For voila, the `build` and the `voila` compose files are used. And for the final case, the `build`, `voila` and `nginx` files are all used.
-
-Also, multi-stage docker files.
+Also, multi-stage docker images allow you to control the size of the final images and delete the
+intermediate ones only used for building (`build-notebook` in this case).
