@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
+set -e
+
 cd ../docker
 # Remove and stop containers if already running
 docker-compose rm -fsv build-notebook voila nginx
-# Build and spin
+# Build and spin (stop if error in building)
+docker-compose up --build --remove-orphans --abort-on-container-exit build-notebook
 docker-compose up --build --remove-orphans build-notebook voila nginx

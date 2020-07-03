@@ -5,36 +5,40 @@ services:
   build-notebook:
     image: jupyter/notebook:builder
     build:
-      context: ../
-      dockerfile: docker/Dockerfile
+      context: $PROJECTDIR
+      dockerfile: docker/Dockerfile # (wrt the PROJECTDIR)
       target: builder
-    command: echo "built" # This prevents the default command from running (i.e. jupyter notebook)
+    # Either of these will work. Empty command will launch a notebook
+    command: python3 -m unittest
+    # command: echo "built" #
 
   # Run jupyter notebook (for editing)
   run-notebook:
     image: jupyter/notebook:run
     build:
-      context: ../
+      context: $PROJECTDIR
       dockerfile: docker/Dockerfile
       target: run
       cache_from:
         - jupyter/notebook:builder
     volumes:
-      - ../:/home/jovyan/work
+      - $PROJECTDIR:/home/jovyan/work/
     ports:
       - "8888:8888"
+    depends_on:
+      - build-notebook
 
   # Run voila server
   voila:
     image: jupyter/voila
     build:
-      context: ../
+      context: $PROJECTDIR
       dockerfile: docker/Dockerfile
       target: deploy
       cache_from:
         - jupyter/notebook:builder
     volumes:
-      - ../:/home/jovyan/work
+      - $PROJECTDIR:/home/jovyan/work/
     expose:
       - 8866
     command: ./run_voila
@@ -43,8 +47,8 @@ services:
   nginx:
     image: nginx-voila
     build:
-      context: ../nginx
-      dockerfile: ../docker/Dockerfile.nginx
+      context: $JSVDIR
+      dockerfile: docker/Dockerfile.nginx
     restart: unless-stopped
     container_name: nginx
     links:
@@ -52,4 +56,4 @@ services:
     ports:
       - 80:80
     volumes:
-      - ../nginx/conf.d/:/etc/nginx/conf.d/
+      - $JSVDIR/nginx/conf.d/:/etc/nginx/conf.d/
